@@ -1,0 +1,71 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Akun Generator</title><style>:root{--bg:#07060d;--card:#12101f;--line:#2a2450;--pu:#8b5cf6;--pu2:#6d28d9;--bl:#3b82f6;--tx:#ece9ff;--mu:#9a94c4;--bad:#f87171}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 500px at 10% -10%,#2a1763,transparent 60%),radial-gradient(700px 400px at 100% 0,#10256b,transparent 55%),var(--bg);color:var(--tx);font:15px/1.5 system-ui,sans-serif;min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding:18px}.logo{font-weight:800;font-size:18px;background:linear-gradient(90deg,var(--pu),var(--bl));-webkit-background-clip:text;background-clip:text;color:transparent}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:16px}h2{margin:0 0 10px;font-size:16px}
+label{display:block;font-size:12px;color:var(--mu);margin:10px 0 4px}
+input,select,textarea{width:100%;background:#0b0a16;border:1px solid var(--line);color:var(--tx);border-radius:10px;padding:10px 12px;font:inherit}
+textarea{font:12px ui-monospace,monospace;min-height:130px;color:#c4b5fd}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--pu);border-color:transparent}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+button{cursor:pointer;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:600;color:#fff;background:linear-gradient(90deg,var(--pu2),var(--bl))}
+button.s{background:#1c1838;border:1px solid var(--line)}button.d{background:#3a1420;color:var(--bad);border:1px solid #5b1f30}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.msg{margin-top:10px;font-size:13px;color:#60a5fa}.msg.e{color:var(--bad)}
+.tabs{display:flex;gap:8px;margin-bottom:14px}.tabs button{background:#1c1838;border:1px solid var(--line)}.tabs button.on{background:linear-gradient(90deg,var(--pu2),var(--bl))}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}th{color:var(--mu);font-size:12px}
+.codes{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin-top:12px}
+.v{border:1px dashed var(--pu);border-radius:10px;padding:10px;text-align:center;background:#0d0b1b}.v small{color:var(--mu);display:block}.v b{font:700 18px ui-monospace,monospace;letter-spacing:1px;color:#c4b5fd}
+.login{max-width:380px;margin:8vh auto 0}.hide{display:none}
+@media print{body{background:#fff}header,.card,.tabs{display:none!important}.pr{display:block!important}.v{border-color:#000;background:#fff}.v b{color:#000}.v small{color:#333}}
+.nav{display:flex;gap:6px;background:#0d0b1b;border:1px solid var(--line);border-radius:14px;padding:5px;margin-bottom:16px}
+.nav button{flex:1;background:transparent;border:0;color:var(--mu);padding:12px 8px;font-size:15px}.nav button.on{background:linear-gradient(90deg,var(--pu2),var(--bl));color:#fff}
+.step{display:flex;align-items:center;gap:10px;margin:0 0 12px}.step i{font-style:normal;width:28px;height:28px;border-radius:50%;background:linear-gradient(90deg,var(--pu2),var(--bl));display:grid;place-items:center;font-weight:700;font-size:14px;flex:none}.step h2{margin:0}
+.pk{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.opt{border:2px solid var(--line);background:#0d0b1b;border-radius:14px;padding:14px;cursor:pointer;text-align:left;color:var(--tx);font-weight:400}
+.opt.on{border-color:var(--pu);background:#1a1438;box-shadow:0 0 0 3px #8b5cf633}.opt b{display:block;font-size:17px}.opt small{display:block;color:var(--mu)}.opt em{font-style:normal;color:#93c5fd;font-weight:700}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.chips button{padding:7px 13px;border-radius:99px;background:#1c1838;border:1px solid var(--line);font-weight:500;font-size:13px}.chips button.on{background:linear-gradient(90deg,var(--pu2),var(--bl));border-color:transparent}
+.qty{display:flex;gap:8px;align-items:center}.qty button{width:46px;height:46px;font-size:22px;padding:0}.qty input{text-align:center;font-size:20px;font-weight:700;height:46px;max-width:110px}
+.big{width:100%;padding:16px;font-size:17px;margin-top:6px}.hint{color:var(--mu);font-size:12px;margin-top:4px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#1a1438;border:1px solid var(--pu);padding:11px 18px;border-radius:12px;z-index:9;opacity:0;pointer-events:none;transition:.2s}.toast.on{opacity:1}
+details{margin-top:12px}summary{cursor:pointer;color:#93c5fd;font-size:14px}.sum{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:center}
+.pkc{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--line)}.pkc small{color:var(--mu);display:block}
+@media print{.noprint{display:none!important}.pr .v{break-inside:avoid}}
+.ch{display:flex;flex-wrap:wrap;gap:8px}.ch button{background:#1c1838;border:1px solid var(--line);padding:10px 14px;border-radius:99px;font-weight:600}.ch button.on{background:linear-gradient(90deg,var(--pu2),var(--bl));border-color:transparent}
+.st{display:flex;align-items:center;gap:10px;margin:0 0 12px}.st i{font-style:normal;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(90deg,var(--pu2),var(--bl));font-size:13px;font-weight:700}
+.sum{background:#0d0b1b;border:1px solid var(--pu);border-radius:12px;padding:12px 14px;margin:14px 0;font-size:14px}.sum b{color:#c4b5fd}
+.big{width:100%;padding:15px;font-size:16px}details{margin-top:12px}summary{cursor:pointer;color:var(--mu);font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.stats div{background:#0d0b1b;border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}.stats b{display:block;font-size:18px;color:#c4b5fd}.stats small{color:var(--mu)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1b2a5c;color:#dbeafe;padding:10px 18px;border-radius:99px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:9}.toast.on{opacity:1}
+.v em{display:block;font-style:normal;font-size:11px;color:#93c5fd;margin-top:2px}
+
+.login{text-align:center}.login .ic{font-size:44px;line-height:1}.login h2{font-size:22px;background:linear-gradient(90deg,#8b5cf6,#3b82f6);-webkit-background-clip:text;background-clip:text;color:transparent}.login p.sb{margin:0 0 6px;color:#9a94c4;font-size:14px}.login input{text-align:center}.login label{text-align:left}
+.pw{position:relative}.pw input{padding-right:48px;padding-left:48px}.pw .eye{position:absolute;right:4px;top:50%;transform:translateY(-50%);padding:6px 10px;background:transparent;border:0;font-size:18px;line-height:1}</style></head><body><div class="wrap">
+<header><div class="logo">🛠 Admin Akun Generator</div><div id="who" class="hide"><button class="s" id="lo">Keluar</button></div></header>
+<div id="L" class="card login"><div class="ic">🛠</div><h2>Admin Generator</h2><p class="sb">Kelola akun generator</p><label>Password admin</label><div class="pw"><input id="p" type="password"><button type="button" class="eye" id="eye" title="Tampilkan password">👁</button></div><div class="row"><button class="big" id="go">Masuk</button></div><div id="lm" class="msg"></div></div>
+<div id="A" class="hide"><div class="card"><h2>Tambah akun generator</h2><p style="color:#9a94c4;font-size:13px;margin:0">Satu akun = satu MikroTik. Akun langsung aktif tanpa deploy ulang.</p>
+<div class="g"><div><label>Nama</label><input id="nn"></div><div><label>Username</label><input id="nu"></div><div><label>Password</label><input id="np"></div>
+<div><label>MAC address MikroTik</label><input id="nm" placeholder="AA:BB:CC:DD:EE:FF"></div><div><label>Interface acuan</label><input id="ni" value="ether1"></div></div>
+<div class="row"><button id="add">Tambah akun</button><button class="s" id="gp">Password acak</button></div><div id="m" class="msg"></div>
+<p style="color:#9a94c4;font-size:12px">Cek MAC di router: <code>/interface ethernet print</code></p></div>
+<div class="card"><h2>Akun generator</h2><div style="overflow-x:auto"><table id="tb"></table></div></div></div>
+</div><div class="toast" id="ts"></div>
+<script>
+const $=s=>document.querySelector(s);
+const toast=t=>{$("#ts").textContent=t;$("#ts").classList.add("on");setTimeout(()=>$("#ts").classList.remove("on"),2200)};
+const API=async(a,b)=>{const r=await fetch("/api/"+a,{method:b?"POST":"GET",headers:{"Content-Type":"application/json",Authorization:"Bearer "+(sessionStorage.at||"")},body:b?JSON.stringify(b):undefined});const d=await r.json().catch(()=>({}));if(r.status===401&&sessionStorage.at){sessionStorage.clear();location.reload()}if(!r.ok)throw new Error(d.error||"Gagal ("+r.status+")");return d};
+const say=(t,e)=>{$("#m").textContent=t;$("#m").className="msg"+(e?" e":"")};
+async function go(){try{const d=await API("adminlogin",{password:$("#p").value});sessionStorage.at=d.token;show()}catch(e){$("#lm").textContent=e.message;$("#lm").className="msg e"}}
+function show(){if(!sessionStorage.at)return;$("#L").classList.add("hide");$("#A").classList.remove("hide");$("#who").classList.remove("hide");draw()}
+async function draw(){let it=[];try{it=(await API("adminlist")).items}catch(e){return toast(e.message)}
+ $("#tb").innerHTML="<tr><th>User</th><th>Nama</th><th>MAC MikroTik</th><th>Status</th><th></th></tr>"+(it.map(a=>`<tr><td>${a.user}</td><td>${a.name}</td><td><code>${a.mac||"-"}</code> <small style="color:#9a94c4">(${a.iface||"ether1"})</small></td><td>${a.active?"aktif":"nonaktif"}</td><td style="white-space:nowrap"><button class="s" data-m="${a.user}" data-v="${a.mac||""}" data-i="${a.iface||"ether1"}">Ubah MAC/Port</button> <button class="s" data-t="${a.user}" data-a="${a.active}">${a.active?"Nonaktifkan":"Aktifkan"}</button> <button class="s" data-r="${a.user}">Reset PW</button> <button class="d" data-x="${a.user}">🗑 Hapus</button></td></tr>`).join("")||'<tr><td colspan="5" style="color:#9a94c4">Belum ada akun.</td></tr>');
+ const U=(b,msg)=>API("adminupdate",b).then(()=>{toast(msg);draw()}).catch(e=>toast(e.message));
+ document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>U({user:b.dataset.t,active:b.dataset.a!=="true"},"Status diubah"));
+ document.querySelectorAll("[data-m]").forEach(b=>b.onclick=()=>{const v=prompt("MAC router untuk "+b.dataset.m+":",b.dataset.v);if(!v)return;const i=prompt("Interface acuan (port yang MAC-nya tadi, mis. ether1 atau ether3):",b.dataset.i);if(!i)return;U({user:b.dataset.m,mac:v,iface:i},"MAC dan port diubah")});
+ document.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{const v=prompt("Password baru untuk "+b.dataset.r+" (min. 6):");if(v)U({user:b.dataset.r,password:v},"Password direset. Password baru: "+v)});
+ document.querySelectorAll("[data-x]").forEach(b=>b.onclick=()=>{if(confirm("Hapus akun "+b.dataset.x+" secara permanen?\nAkun langsung tidak bisa dipakai lagi."))API("admindelete",{user:b.dataset.x}).then(()=>{toast("Akun dihapus");draw()}).catch(e=>toast(e.message))})}
+$("#eye").onclick=()=>{const i=$("#p"),h=i.type==="password";i.type=h?"text":"password";$("#eye").textContent=h?"🙈":"👁"};
+$("#go").onclick=go;$("#p").onkeydown=e=>{if(e.key==="Enter")go()};$("#lo").onclick=()=>{sessionStorage.clear();location.reload()};
+$("#gp").onclick=()=>$("#np").value=[...crypto.getRandomValues(new Uint32Array(8))].map(x=>"abcdefghjkmnpqrstuvwxyz23456789"[x%31]).join("");
+$("#add").onclick=async()=>{try{await API("adminadd",{name:$("#nn").value,user:$("#nu").value,password:$("#np").value,mac:$("#nm").value,iface:$("#ni").value});say("Akun "+$("#nu").value+" dibuat dan langsung aktif. Password: "+$("#np").value+" (catat sekarang)");draw()}catch(e){say(e.message,1)}};
+show();
+</script></body></html>
