@@ -90,7 +90,7 @@ const $=s=>document.querySelector(s),rnd=n=>crypto.getRandomValues(new Uint32Arr
 const sha=async(s,p)=>[...new Uint8Array(await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s+":"+p)))].map(x=>x.toString(16).padStart(2,"0")).join("");
 const toast=t=>{$("#ts").textContent=t;$("#ts").classList.add("on");setTimeout(()=>$("#ts").classList.remove("on"),1800)};
 const cpy=t=>navigator.clipboard.writeText(t).then(()=>toast("Tersalin ✓"),()=>toast("Gagal menyalin"));
-const guard=a=>`# Hanya untuk router ${a.mac} (akun ${a.user})\n:if ([/interface ethernet get [find default-name=${a.iface||"ether1"}] mac-address]!="${a.mac}") do={:error "Router tidak terdaftar untuk akun ini"}\n`;
+const guard=a=>`# Hanya untuk router ${a.mac} (akun ${a.user})\n:local rm [:tostr [/interface ethernet get [find default-name=${a.iface||"ether1"}] mac-address]]\n:if ($rm!="${a.mac}") do={:error ("Router tidak terdaftar untuk akun ini. MAC router: ".$rm." | MAC akun: ${a.mac}")}\n`;
 async function verify(){try{const d=await API("me");sessionStorage.s=JSON.stringify(d.me);return d.me}catch{return null}}
 const get=k=>JSON.parse(localStorage[k]||"[]"),put=(k,v)=>localStorage[k]=JSON.stringify(v);
 async function login(){try{const d=await API("login",{user:sl($("#u").value),password:$("#p").value});sessionStorage.t=d.token;sessionStorage.s=JSON.stringify(d.me);enter()}catch(e){$("#lm").className="msg e";$("#lm").textContent=e.message}}
