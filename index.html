@@ -52,7 +52,7 @@ details{margin-top:12px}summary{cursor:pointer;color:#93c5fd;font-size:14px}.sum
 <header><div class="logo">📶 Generator Voucher</div><div id="who" class="hide"><span id="wn"></span> <button class="s" id="lo">Keluar</button></div></header>
 <div id="L" class="card login"><div class="ic">📶</div><h2>Generator Voucher</h2><p class="sb">Masuk dengan akun generator Anda</p><label>Username</label><input id="u" autocomplete="username"><label>Password</label><div class="pw"><input id="p" type="password" autocomplete="current-password"><button type="button" class="eye" id="eye" title="Tampilkan password">👁</button></div><div class="row"><button class="big" id="go">Masuk</button></div><div id="lm" class="msg"></div></div>
 <div id="A" class="hide">
-<div class="tabs"><button class="on" data-t="c">🎟 Voucher</button><button data-t="p">⚙ Profile</button><button data-t="h">🕘 Riwayat</button></div>
+<div class="tabs"><button class="on" data-t="c">🎟 Voucher</button><button data-t="p">⚙ Profile</button><button data-t="h">🕘 Riwayat</button><button data-t="s">🔄 Sinkron</button></div>
 
 <div id="tc">
 <div class="card"><div class="st"><i>1</i><h2 style="margin:0">Kuota data</h2></div><div class="ch" id="q"></div>
@@ -64,7 +64,7 @@ details{margin-top:12px}summary{cursor:pointer;color:#93c5fd;font-size:14px}.sum
 <div class="card"><div class="st"><i>3</i><h2 style="margin:0">Jumlah voucher</h2></div><div class="ch" id="j"></div><input id="n" type="number" min="1" max="500" value="20" style="margin-top:10px">
 <details><summary>Pengaturan lanjutan</summary><div class="g"><div><label>Panjang kode</label><input id="l" type="number" min="4" max="12" value="6"></div><div><label>Prefix</label><input id="px" placeholder="WF-"></div>
 <div><label>Karakter</label><select id="md"><option value="mix">Huruf + angka</option><option value="num">Angka saja</option><option value="alpha">Huruf saja</option></select></div>
-<div><label>Profile</label><input id="pf" list="pl" value="default"><datalist id="pl"></datalist></div><div><label>Harga (tercetak)</label><input id="pr" placeholder="Rp 5.000"></div></div></details></div>
+<div><label>Profile</label><input id="pf" list="pl" value="default"><datalist id="pl"></datalist></div><div><label>Harga (tercetak)</label><input id="pr" placeholder="Rp 5.000"></div><div><label>Pengiriman ke router</label><select id="au"><option value="1">Otomatis (router mengambil)</option><option value="0">Manual (tempel/import)</option></select></div></div></details></div>
 <div class="card"><details><summary>🖨 Pengaturan cetak: nama toko & logo</summary><div class="g">
 <div><label>Nama toko</label><input id="tn" placeholder="Toko Saya"></div><div><label>Judul voucher</label><input id="tt" value="VOUCHER WIFI"></div>
 <div><label>Catatan kaki</label><input id="tf" placeholder="Masukkan kode di halaman login"></div><div><label>Kolom per baris</label><select id="tcl"><option>2</option><option selected>3</option><option>4</option></select></div></div>
@@ -82,6 +82,11 @@ details{margin-top:12px}summary{cursor:pointer;color:#93c5fd;font-size:14px}.sum
 <div><label>Idle timeout</label><input id="it" value="5m"></div><div><label>Keepalive</label><input id="ka" value="2m"></div><div><label>Perangkat per voucher</label><input id="su" type="number" min="1" value="1"></div></div>
 <div class="sum" id="ps"></div><div class="row"><button id="cpp">📋 Salin</button><button class="s" id="sv">💾 Simpan ke daftar profile</button></div></div></div>
 
+<div id="tsy" class="hide"><div class="card"><h2>🔄 Sinkron otomatis ke router</h2>
+<p style="color:#9a94c4;font-size:13px;margin:0 0 10px">Pasang sekali di MikroTik. Setelah itu voucher yang Anda buat masuk ke router sendiri dalam sekitar 1 menit, tanpa unduh atau import file lagi. Router harus punya internet.</p>
+<ol style="color:#c9c3ee;font-size:14px;padding-left:20px;margin:0"><li>Klik <b>Salin</b> di bawah.</li><li>Buka <b>New Terminal</b> di WinBox, tempel, lalu Enter. Cukup sekali.</li><li>Buat voucher di tab Voucher (pengiriman <b>Otomatis</b>).</li><li>Cek di router: <code>/ip hotspot user print where comment~"vc-"</code></li></ol>
+<label>Script pemasangan (berisi kunci rahasia akun ini, jangan dibagikan)</label><textarea id="sy" readonly></textarea><div class="row"><button id="cy">📋 Salin</button></div>
+<p style="color:#9a94c4;font-size:12px;margin:10px 0 0">Jika kunci bocor, minta admin menekan <b>Reset kunci</b> lalu pasang ulang script ini.</p></div></div>
 <div id="th" class="hide"><div class="card"><h2>10 batch terakhir (tersimpan di server)</h2><table id="ht"></table></div></div>
 </div></div><div class="toast" id="ts"></div>
 <script>
@@ -97,7 +102,7 @@ async function login(){try{const d=await API("login",{user:sl($("#u").value),pas
 function enter(){const s=sessionStorage.s&&JSON.parse(sessionStorage.s);if(!s)return;$("#L").classList.add("hide");$("#A").classList.remove("hide");$("#who").classList.remove("hide");$("#wn").textContent=(s.name||s.user)+" · "+s.mac;init()}
 $("#eye").onclick=()=>{const i=$("#p"),h=i.type==="password";i.type=h?"text":"password";$("#eye").textContent=h?"🙈":"👁";$("#eye").title=h?"Sembunyikan password":"Tampilkan password"};
 $("#go").onclick=login;$("#p").onkeydown=e=>{if(e.key==="Enter")login()};$("#lo").onclick=()=>{sessionStorage.clear();location.reload()};
-document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));["c","p","h"].forEach(t=>$("#t"+t).classList.toggle("hide",b.dataset.t!==t));if(b.dataset.t==="h")hist()});
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));["c","p","h"].forEach(t=>$("#t"+t).classList.toggle("hide",b.dataset.t!==t));$("#tsy").classList.toggle("hide",b.dataset.t!=="s");if(b.dataset.t==="h")hist()});
 
 const Q=[["500 MB","500M"],["1 GB","1G"],["2 GB","2G"],["5 GB","5G"],["10 GB","10G"],["Tanpa batas",""],["Custom","c"]];
 const M=[["1 jam","1h"],["3 jam","3h"],["1 hari","1d"],["3 hari","3d"],["7 hari","7d"],["30 hari","30d"],["Tanpa batas",""],["Custom","c"]];
@@ -109,18 +114,21 @@ function quota(){if(st.q!=="c")return st.q;const g=+$("#qn").value;return g>0?(N
 function life(){return st.m==="c"?($("#mn").value.trim().replace(/\s/g,"")):st.m}
 const lq=v=>v?v.replace("M"," MB").replace("G"," GB"):"Tanpa batas",lm=v=>!v?"Tanpa batas":v.replace(/(\d+)h$/,"$1 jam").replace(/(\d+)d$/,"$1 hari").replace(/(\d+)m$/,"$1 menit");
 function sum(){$("#sm").innerHTML=`Membuat <b>${+$("#n").value||1} voucher</b> · kuota <b>${lq(quota())}</b> · aktif <b>${lm(life())}</b>${life()?(st.a==="1"?" sejak login pertama":" (total waktu online)"):""} — voucher mati saat salah satu habis.`;$("#amn").textContent=st.a==="1"?"Waktu mulai berjalan saat kode pertama kali dimasukkan di halaman login, lalu voucher terhapus otomatis saat habis. Script akan memasang on-login pada profile yang dipilih.":"Dihitung dari total lama online (limit-uptime), bukan dari waktu dibuat."}
-function init(){chips("#q",Q,"q");chips("#m",M,"m");chips("#am",AM,"a");loadPS();$("#j").innerHTML=J.map(n=>`<button data-v="${n}">${n}</button>`).join("");$("#j").onclick=e=>{const b=e.target.closest("button");if(b){$("#n").value=b.dataset.v;mark();sum()}};
+function init(){chips("#q",Q,"q");chips("#m",M,"m");chips("#am",AM,"a");loadPS();syncInit();$("#j").innerHTML=J.map(n=>`<button data-v="${n}">${n}</button>`).join("");$("#j").onclick=e=>{const b=e.target.closest("button");if(b){$("#n").value=b.dataset.v;mark();sum()}};
  ["#n","#qn","#mn"].forEach(i=>$(i).oninput=()=>{mark();sum()});mark();sum();fill();profSum();presets()}
 const fill=()=>$("#pl").innerHTML=((JSON.parse(sessionStorage.s||"{}").profiles)||[]).map(p=>`<option value="${p}">`).join("");
-$("#mk").onclick=async()=>{$("#mk").disabled=true;try{const pr=$("#pr").value.replace(/[<>&]/g,""),d=await API("generate",{n:+$("#n").value,len:+$("#l").value,px:$("#px").value,md:$("#md").value,pf:$("#pf").value,q:quota(),m:life(),act:+st.a,pr});
+$("#mk").onclick=async()=>{$("#mk").disabled=true;try{const pr=$("#pr").value.replace(/[<>&]/g,""),d=await API("generate",{n:+$("#n").value,len:+$("#l").value,px:$("#px").value,md:$("#md").value,pf:$("#pf").value,q:quota(),m:life(),act:+st.a,pr,auto:+$("#au").value});
  $("#sc").value=d.script;$("#cl").value=d.cleaner;$("#s1").textContent=d.n;$("#s2").textContent=lq(d.q);$("#s3").textContent=lm(d.m);
- sheet(d.codes,d);$("#out").classList.remove("hide");$("#out").scrollIntoView({behavior:"smooth"})}catch(e){toast(e.message)}$("#mk").disabled=false};
+ sheet(d.codes,d);toast(d.auto?"Masuk antrean sinkron: router mengambil dalam ±1 menit":"Mode manual: tempel atau import script ke router");$("#out").classList.remove("hide");$("#out").scrollIntoView({behavior:"smooth"})}catch(e){toast(e.message)}$("#mk").disabled=false};
 $("#cp").onclick=()=>cpy($("#sc").value);$("#cc").onclick=()=>cpy($("#cl").value);$("#pt").onclick=()=>print();
 $("#dl").onclick=()=>{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([$("#sc").value]));a.download="voucher.rsc";a.click()};
 async function hist(){let h=[];try{h=(await API("history")).items}catch(e){toast(e.message)}
  $("#ht").innerHTML="<tr><th>Tanggal</th><th>Jumlah</th><th>Kuota</th><th>Aktif</th><th></th></tr>"+(h.map((x,i)=>`<tr><td>${new Date(x.t).toLocaleString("id-ID")}</td><td>${x.n}</td><td>${lq(x.q)}</td><td>${lm(x.m)}</td><td style="white-space:nowrap"><button class="s" data-i="${i}">Salin script</button> <button class="s" data-p="${i}">Cetak</button></td></tr>`).join("")||'<tr><td colspan="5" style="color:#9a94c4">Belum ada.</td></tr>');
  document.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>cpy(h[b.dataset.i].script));
  document.querySelectorAll("[data-p]").forEach(b=>b.onclick=()=>{const x=h[b.dataset.p],c=[...x.script.matchAll(/ add name=(\S+) password=/g)].map(m=>m[1]);sheet(c,x);document.querySelector('[data-t="c"]').click();setTimeout(()=>print(),300)})}
+function syncInit(){const m=JSON.parse(sessionStorage.s||"{}");
+ $("#sy").value=`/system script add name=sync-voucher policy=read,write,policy,test,ftp,sensitive source="/tool fetch url=\\"${location.origin}/api/sync?u=${m.user}&k=${m.key}\\" dst-path=sync.rsc; /import file-name=sync.rsc; /file remove [find name=\\"sync.rsc\\"]"\n/system scheduler add name=sync-voucher interval=1m on-event=sync-voucher\n`;
+ $("#cy").onclick=()=>cpy($("#sy").value)}
 const pk=()=>"ps:"+(JSON.parse(sessionStorage.s||"{}").user||"");
 const PSF={tn:"tn",tt:"tt",tf:"tf",tcl:"cols"};
 function loadPS(){let p={};try{p=JSON.parse(localStorage[pk()]||"{}")}catch{}for(const[k,v]of Object.entries(PSF))if(p[v]!=null)$("#"+k).value=p[v];logo(p.logo);
